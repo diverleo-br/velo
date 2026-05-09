@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 
 test('deve consultar um pedido aprovado', async ({ page }) => {
   //Arrange
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:5173');
   await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint');
   await page.getByRole('link', { name: 'Consultar Pedido' }).click();
 
@@ -12,7 +12,9 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
   await expect(page.getByRole('heading')).toContainText('Consultar Pedido');
 
   // Act
-  await page.getByTestId('search-order-id').fill('VLO-290N33');
+  //mudando o nome do input para order-id
+  //await page.locator('input[name="order-id"]').fill('VLO-290N33');
+  await page.getByRole('textbox', { name: 'Número do Pedido' }).fill('VLO-290N33');
   await page.getByTestId('search-order-button').click();
 
   //Assert
