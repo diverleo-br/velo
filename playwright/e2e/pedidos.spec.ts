@@ -15,9 +15,11 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
   //mudando o nome do input para order-id
   //await page.locator('input[name="order-id"]').fill('VLO-290N33');
   await page.getByRole('textbox', { name: 'Número do Pedido' }).fill('VLO-290N33');
-  await page.getByTestId('search-order-button').click();
+  //await page.getByTestId('search-order-button').click();
+  await page.getByRole('button', { name: 'Buscar Pedido' }).click();
 
   //Assert
+<<<<<<< HEAD
   //await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10_000});
   //await expect(page.getByTestId('order-result-id')).toContainText('VLO-290N33');
   
@@ -25,6 +27,12 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
   await expect(page.getByTestId('order-result-VLO-290N33')).toContainText('APROVADO');
   //await expect(page.getByText('APROVADO')).toBeVisible();
   //await expect(page.getByTestId('order-result-status')).toBeVisible();
+=======
+  //await page.waitForTimeout(10000);//thead sleep ou cypress wait não é correto usar esse modo de esperar
+  await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10_000});
+  await expect(page.getByTestId('order-result-id')).toContainText('VLO-290N33');
+  await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
+>>>>>>> 0f1bf0557162fbead24096d36e13fb31cc0be479
 
 });
   //await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
