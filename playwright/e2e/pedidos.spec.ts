@@ -20,8 +20,10 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
   //Assert
   //await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10_000});
   //await expect(page.getByTestId('order-result-id')).toContainText('VLO-290N33');
-
-  await expect(page.getByText('APROVADO')).toBeVisible();
+  
+  await expect(page.getByTestId('order-result-VLO-290N33')).toContainText('VLO-290N33');
+  await expect(page.getByTestId('order-result-VLO-290N33')).toContainText('APROVADO');
+  //await expect(page.getByText('APROVADO')).toBeVisible();
   //await expect(page.getByTestId('order-result-status')).toBeVisible();
 
 });

@@ -58,7 +58,7 @@ const OrderLookup = () => {
     }
     
     if (order) {
-      setSearchedOrder(order);
+        setSearchedOrder(order);
     } else {
       setNotFound(true);
     }
@@ -139,7 +139,9 @@ const OrderLookup = () => {
                   <Package className="w-5 h-5 text-muted-foreground" />
                   <div>
                     <p className="text-sm text-muted-foreground">Pedido</p>
-                
+                    <p className="font-mono font-medium" >
+                      {searchedOrder.id}
+                    </p>
                   </div>
                 </div>
                 <div
