@@ -3,76 +3,82 @@ import { gerarCodigoPedido } from '../support/helpers';
 
 ///AAA - Arrange, Act, Assert
 
-const order = "VLO-290N33";
+test.describe('Consulta de Pedido', ()=>{
 
-console.log(order); // Exemplo: VLO-290N33
-
-test('deve consultar um pedido aprovado', async ({ page }) => {
-
-  // teste data
-  const order = 'VLO-290N33' // numero do pedido
-  //Arrange
-  await page.goto('http://localhost:5173');
-  await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint');
-  await page.getByRole('link', { name: 'Consultar Pedido' }).click();
-
-  //checkpoint 2: verifica o texto Consultar Pedido na tela
-  await expect(page.getByRole('heading')).toContainText('Consultar Pedido');
-
-  // Act
-  //mudando o nome do input para order-id
-  //await page.locator('input[name="order-id"]').fill('VLO-290N33');
-  await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order);
-  //await page.getByTestId('search-order-button').click();
-  await page.getByRole('button', { name: 'Buscar Pedido' }).click();
-
-  //Assert
-  //await page.waitForTimeout(10000);//thead sleep ou cypress wait não é correto usar esse modo de esperar
-  //estes são utilizando os IDs
-  await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10_000});
-  await expect(page.getByTestId('order-result-id')).toContainText(order);
-  await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
-
-  //removendo os ids (order-result-id e order-result-status)
-  //const orderCode = page.locator('//p[text()="Pedido"]~/..//p[text()="VLO-290N33"]')
-  //await expect(orderCode).toBeVisible({timeout: 10_000})
-
-  //melhor modo
-  // const containerPedido = page.getByRole('paragraph')
-  // .filter({hasText: /^Pedido$/})
-  // .locator('..')  //sobe para o elemento pai (a div que agrupa ambos)
-  // await expect(containerPedido).toContainText("VLO-290N33")
-
-});
-
-test ('deve exibir mensagem quando o pedido não for encontrado', async ({page})=>{
-
-  const order = gerarCodigoPedido();
-
-  //Arrange
-  await page.goto('http://localhost:5173');
-  await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint');
+ 
+  test.beforeEach(async ({page}) => {
+    await page.goto('http://localhost:5173');
+    await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint');
+    
+    await page.getByRole('link', { name: 'Consultar Pedido' }).click();
+    //checkpoint 2: verifica o texto Consultar Pedido na tela
+    await expect(page.getByRole('heading')).toContainText('Consultar Pedido');
+  })
   
-  await page.getByRole('link', { name: 'Consultar Pedido' }).click();
-  //checkpoint 2: verifica o texto Consultar Pedido na tela
-  await expect(page.getByRole('heading')).toContainText('Consultar Pedido');
+ 
+  const order = "VLO-290N33";
 
-  await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order);
-  await page.getByRole('button', { name: 'Buscar Pedido' }).click();
+  console.log(order); // Exemplo: VLO-290N33
 
-  // await expect(page.locator('#root')).toContainText('Pedido não encontrado');
-  // await expect(page.locator('#root')).toContainText('Verifique o número do pedido e tente novamente');
+  test('deve consultar um pedido aprovado', async ({ page }) => {
 
-  const title = page.getByRole('heading', {name:'Pedido não encontrado'})
-  await expect(title).toBeVisible()
+    // teste data
+    const order = 'VLO-290N33' // numero do pedido
+    //Arrange
+   
+    // Act
+    //mudando o nome do input para order-id
+    //await page.locator('input[name="order-id"]').fill('VLO-290N33');
+    await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order);
+    //await page.getByTestId('search-order-button').click();
+    await page.getByRole('button', { name: 'Buscar Pedido' }).click();
+  
+    //Assert
+    //await page.waitForTimeout(10000);//thead sleep ou cypress wait não é correto usar esse modo de esperar
+ 
+    //estes são utilizando os IDs
+    await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10_000});
+    await expect(page.getByTestId('order-result-id')).toContainText(order);
+    await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
+  
+    //removendo os ids (order-result-id e order-result-status)
+    //const orderCode = page.locator('//p[text()="Pedido"]~/..//p[text()="VLO-290N33"]')
+    //await expect(orderCode).toBeVisible({timeout: 10_000})
+  
+    //melhor modo
+    // const containerPedido = page.getByRole('paragraph')
+    // .filter({hasText: /^Pedido$/})
+    // .locator('..')  //sobe para o elemento pai (a div que agrupa ambos)
+    // await expect(containerPedido).toContainText("VLO-290N33")
+  
+  });
+  
+  test ('deve exibir mensagem quando o pedido não for encontrado', async ({page})=>{
+  
+    const order = gerarCodigoPedido();
+  
+    //Arrange
 
-  //const message = page.getByText('Verifique o número do pedido e tente novamente')
-  // const message = page.locator('p', {hasText:'Verifique o número do pedido e tente novamente'})
-  // await expect(message).toBeVisible()
-  await expect(page.locator('#root')).toMatchAriaSnapshot(`
-    - img
-    - heading "Pedido não encontrado" [level=3]
-    - paragraph: Verifique o número do pedido e tente novamente
-    `);
+  
+    await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order);
+    await page.getByRole('button', { name: 'Buscar Pedido' }).click();
+  
+    // await expect(page.locator('#root')).toContainText('Pedido não encontrado');
+    // await expect(page.locator('#root')).toContainText('Verifique o número do pedido e tente novamente');
+  
+    const title = page.getByRole('heading', {name:'Pedido não encontrado'})
+    await expect(title).toBeVisible()
+  
+    //const message = page.getByText('Verifique o número do pedido e tente novamente')
+    // const message = page.locator('p', {hasText:'Verifique o número do pedido e tente novamente'})
+    // await expect(message).toBeVisible()
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - img
+      - heading "Pedido não encontrado" [level=3]
+      - paragraph: Verifique o número do pedido e tente novamente
+      `);
+  
+  });  
+})
 
-});
+
