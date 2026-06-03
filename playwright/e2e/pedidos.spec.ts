@@ -36,11 +36,44 @@ test.describe('Consulta de Pedido', ()=>{
     //Assert
     //await page.waitForTimeout(10000);//thead sleep ou cypress wait não é correto usar esse modo de esperar
  
-    //estes são utilizando os IDs
+
+    /* //estes são utilizando os IDs
     await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10_000});
     await expect(page.getByTestId('order-result-id')).toContainText(order);
     await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
-  
+   */
+
+    //teste de snapshot
+    await expect(page.getByTestId(`order-result-${order}`)).toMatchAriaSnapshot(`
+      - img
+      - paragraph: Pedido
+      - paragraph: ${order}
+      - img
+      - text: APROVADO
+      - img "Velô Sprint"
+      - paragraph: Modelo
+      - paragraph: Velô Sprint
+      - paragraph: Cor
+      - paragraph: Midnight Black
+      - paragraph: Interior
+      - paragraph: cream
+      - paragraph: Rodas
+      - paragraph: aero Wheels
+      - heading "Dados do Cliente" [level=4]
+      - paragraph: Nome
+      - paragraph: leo euzebio
+      - paragraph: Email
+      - paragraph: diver@velo.dev.com
+      - paragraph: Loja de Retirada
+      - paragraph
+      - paragraph: Data do Pedido
+      - paragraph: /\\d+\\/\\d+\\/\\d+/
+      - heading "Pagamento" [level=4]
+      - paragraph: À Vista
+      - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
+      `);
+    
+
     //removendo os ids (order-result-id e order-result-status)
     //const orderCode = page.locator('//p[text()="Pedido"]~/..//p[text()="VLO-290N33"]')
     //await expect(orderCode).toBeVisible({timeout: 10_000})
