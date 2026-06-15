@@ -30,7 +30,7 @@ test.describe('Consulta de Pedido', ()=>{
       number: 'VLO-290N33',
       status: 'APROVADO',
       color: 'Midnight Black',
-      wheels: 'aero wheels',
+      wheels: 'aero Wheels',
       custumer: {
         name: 'leo euzebio',
         email: 'diver@velo.dev.com',
@@ -61,8 +61,9 @@ test.describe('Consulta de Pedido', ()=>{
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
-      - img
-      - text: ${order.status}
+      - status:
+        - img
+        - text: ${order.status}
       - img "Velô Sprint"
       - paragraph: Modelo
       - paragraph: Velô Sprint
@@ -85,7 +86,15 @@ test.describe('Consulta de Pedido', ()=>{
       - paragraph: ${order.payment}
       - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
       `);
-    
+
+      //validação do status mais detalhado validando o background e o texto e o icon
+      const statusBadge =page.getByRole('status').filter({hasText: order.status})
+
+      await expect(statusBadge).toHaveClass(/bg-green-100/)
+      await expect(statusBadge).toHaveClass(/text-green-700/)
+
+      const statusIcon = statusBadge.locator('svg')
+      await expect(statusIcon).toHaveClass(/lucide-circle-check-big/)
 
     //removendo os ids (order-result-id e order-result-status)
     //const orderCode = page.locator('//p[text()="Pedido"]~/..//p[text()="VLO-290N33"]')
@@ -133,7 +142,7 @@ test.describe('Consulta de Pedido', ()=>{
       number: 'VLO-9GKXPY',
       status: 'REPROVADO',
       color: 'Lunar White',
-      wheels: 'Sport Wheels',
+      wheels: 'sport Wheels',
       custumer: {
         name: 'Bruce Euzebio',
         email: 'bruce@iron.com.br',
@@ -164,8 +173,9 @@ test.describe('Consulta de Pedido', ()=>{
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
-      - img
-      - text: ${order.status}
+      - status:
+        - img
+        - text: ${order.status}
       - img "Velô Sprint"
       - paragraph: Modelo
       - paragraph: Velô Sprint
@@ -188,8 +198,91 @@ test.describe('Consulta de Pedido', ()=>{
       - paragraph: ${order.payment}
       - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
       `);
+      //validação do status mais detalhado validando o background e o texto e o icon
+      const statusBadge =page.getByRole('status').filter({hasText: order.status})
+
+      await expect(statusBadge).toHaveClass(/bg-red-100/)
+      await expect(statusBadge).toHaveClass(/text-red-700/)
+
+      const statusIcon = statusBadge.locator('svg')
+      await expect(statusIcon).toHaveClass(/lucide-circle-x/)
 
   });  
+  test('deve consultar um pedido em analise', async ({ page }) => {
+
+    // teste data
+    //const order = 'VLO-U0DM7F' // numero do pedido
+    //Arrange
+    const order = {
+      number: 'VLO-U0DM7F',
+      status: 'EM_ANALISE',
+      color: 'Lunar White',
+      wheels: 'aero Wheels',
+      custumer: {
+        name: 'Maira Carolina',
+        email: 'maira@velo.dev',
+
+    },
+    payment: 'À Vista',
+    }
+
+    // Act
+    //mudando o nome do input para order-id
+    //await page.locator('input[name="order-id"]').fill('VLO-290N33');
+    await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order.number);
+    //await page.getByTestId('search-order-button').click();
+    await page.getByRole('button', { name: 'Buscar Pedido' }).click();
+  
+    //Assert
+    //await page.waitForTimeout(10000);//thead sleep ou cypress wait não é correto usar esse modo de esperar
+ 
+
+    /* //estes são utilizando os IDs
+    await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10_000});
+    await expect(page.getByTestId('order-result-id')).toContainText(order);
+    await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
+   */
+
+    //teste de snapshot
+    await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
+      - img
+      - paragraph: Pedido
+      - paragraph: ${order.number}
+      - status:
+        - img
+        - text: ${order.status}
+      - img "Velô Sprint"
+      - paragraph: Modelo
+      - paragraph: Velô Sprint
+      - paragraph: Cor
+      - paragraph: ${order.color}
+      - paragraph: Interior
+      - paragraph: cream
+      - paragraph: Rodas
+      - paragraph: ${order.wheels}
+      - heading "Dados do Cliente" [level=4]
+      - paragraph: Nome
+      - paragraph: ${order.custumer.name}
+      - paragraph: Email
+      - paragraph: ${order.custumer.email}
+      - paragraph: Loja de Retirada
+      - paragraph
+      - paragraph: Data do Pedido
+      - paragraph: /\\d+\\/\\d+\\/\\d+/
+      - heading "Pagamento" [level=4]
+      - paragraph: ${order.payment}
+      - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
+      `);
+      //validação do status mais detalhado validando o background e o texto e o icon
+      const statusBadge =page.getByRole('status').filter({hasText: order.status})
+
+      await expect(statusBadge).toHaveClass(/bg-amber-100/)
+      await expect(statusBadge).toHaveClass(/text-amber-700/)
+
+      const statusIcon = statusBadge.locator('svg')
+      await expect(statusIcon).toHaveClass(/lucide-clock/)
+
+  });
 })
 
 
