@@ -1,3 +1,4 @@
+import { Page } from '@playwright/test'
 
 export function gerarCodigoPedido() {
     const prefix = "VLO";
@@ -11,3 +12,8 @@ export function gerarCodigoPedido() {
     return `${prefix}-${randomPart}`; 
   }
   
+// support/helpers.ts
+/* export async function searchOrder(page: Page, orderNumber: string) {
+  await page.getByRole('textbox', { name: 'Código do Pedido' }).fill(orderNumber)
+  await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+} */

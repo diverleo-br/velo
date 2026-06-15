@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { gerarCodigoPedido } from '../support/helpers';
+import { gerarCodigoPedido} from '../support/helpers';
+
+import { OderLockupPage } from '../support/pages/OderLockupPage'
+
 
 ///AAA - Arrange, Act, Assert
 
@@ -42,9 +45,11 @@ test.describe('Consulta de Pedido', ()=>{
     // Act
     //mudando o nome do input para order-id
     //await page.locator('input[name="order-id"]').fill('VLO-290N33');
-    await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order.number);
     //await page.getByTestId('search-order-button').click();
-    await page.getByRole('button', { name: 'Buscar Pedido' }).click();
+
+    const oderLockupPage = new OderLockupPage(page)
+    await oderLockupPage.searchOrder(order.number)
+
   
     //Assert
     //await page.waitForTimeout(10000);//thead sleep ou cypress wait não é correto usar esse modo de esperar
@@ -108,32 +113,7 @@ test.describe('Consulta de Pedido', ()=>{
   
   });
   
-  test ('deve exibir mensagem quando o pedido não for encontrado', async ({page})=>{
-  
-    const order = gerarCodigoPedido();
-  
-    //Arrange
-
-  
-    await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order);
-    await page.getByRole('button', { name: 'Buscar Pedido' }).click();
-  
-    // await expect(page.locator('#root')).toContainText('Pedido não encontrado');
-    // await expect(page.locator('#root')).toContainText('Verifique o número do pedido e tente novamente');
-  
-    const title = page.getByRole('heading', {name:'Pedido não encontrado'})
-    await expect(title).toBeVisible()
-  
-    //const message = page.getByText('Verifique o número do pedido e tente novamente')
-    // const message = page.locator('p', {hasText:'Verifique o número do pedido e tente novamente'})
-    // await expect(message).toBeVisible()
-    await expect(page.locator('#root')).toMatchAriaSnapshot(`
-      - img
-      - heading "Pedido não encontrado" [level=3]
-      - paragraph: Verifique o número do pedido e tente novamente
-      `);
-  });
-  test('deve consultar um pedido reprovado', async ({ page }) => {
+   test('deve consultar um pedido reprovado', async ({ page }) => {
 
     // teste data
     //const order = 'VLO-9GKXPY' // numero do pedido
@@ -154,10 +134,14 @@ test.describe('Consulta de Pedido', ()=>{
     // Act
     //mudando o nome do input para order-id
     //await page.locator('input[name="order-id"]').fill('VLO-290N33');
-    await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order.number);
+    //await page.getByRole('textbox', { name: 'Código do Pedido' }).fill(order.number);
     //await page.getByTestId('search-order-button').click();
-    await page.getByRole('button', { name: 'Buscar Pedido' }).click();
-  
+    //await page.getByRole('button', { name: 'Buscar Pedido' }).click();
+    const oderLockupPage = new OderLockupPage(page)
+    await oderLockupPage.searchOrder(order.number)
+
+
+
     //Assert
     //await page.waitForTimeout(10000);//thead sleep ou cypress wait não é correto usar esse modo de esperar
  
@@ -229,10 +213,13 @@ test.describe('Consulta de Pedido', ()=>{
     // Act
     //mudando o nome do input para order-id
     //await page.locator('input[name="order-id"]').fill('VLO-290N33');
-    await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order.number);
+    //await page.getByRole('textbox', { name: 'Código do Pedido' }).fill(order.number);
     //await page.getByTestId('search-order-button').click();
-    await page.getByRole('button', { name: 'Buscar Pedido' }).click();
-  
+    //await page.getByRole('button', { name: 'Buscar Pedido' }).click();
+    const oderLockupPage = new OderLockupPage(page)
+    await oderLockupPage.searchOrder(order.number)
+
+    
     //Assert
     //await page.waitForTimeout(10000);//thead sleep ou cypress wait não é correto usar esse modo de esperar
  
@@ -282,6 +269,32 @@ test.describe('Consulta de Pedido', ()=>{
       const statusIcon = statusBadge.locator('svg')
       await expect(statusIcon).toHaveClass(/lucide-clock/)
 
+  });
+
+  test ('deve exibir mensagem quando o pedido não for encontrado', async ({page})=>{
+  
+    const order = gerarCodigoPedido();
+  
+    //Arrange
+    //await page.getByRole('textbox', { name: 'Código do Pedido' }).fill(order);
+    //await page.getByRole('button', { name: 'Buscar Pedido' }).click();
+    const oderLockupPage = new OderLockupPage(page)
+    await oderLockupPage.searchOrder(order)
+  
+    // await expect(page.locator('#root')).toContainText('Pedido não encontrado');
+    // await expect(page.locator('#root')).toContainText('Verifique o número do pedido e tente novamente');
+  
+    const title = page.getByRole('heading', {name:'Pedido não encontrado'})
+    await expect(title).toBeVisible()
+  
+    //const message = page.getByText('Verifique o número do pedido e tente novamente')
+    // const message = page.locator('p', {hasText:'Verifique o número do pedido e tente novamente'})
+    // await expect(message).toBeVisible()
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - img
+      - heading "Pedido não encontrado" [level=3]
+      - paragraph: Verifique o número do pedido e tente novamente
+      `);
   });
 })
 
