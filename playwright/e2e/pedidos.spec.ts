@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 import { generateOrderCode } from '../support/helpers'
 
-import { OrderLockupPage } from '../support/pages/OrderLockupPage'
+import { OrderLockupPage } from '../support/pages/OderLockupPage'
 
 /// AAA - Arrange, Act, Assert
 
@@ -21,14 +21,14 @@ test.describe('Consulta de Pedido', () => {
 
     // Test Data
     const order = {
-      number: 'VLO-6E2J20',
-      status: 'APROVADO' as const,
-      color: 'Lunar White',
+      number: 'VLO-290N33',
+      status: 'APROVADO',
+      color: 'Midnight Black',
       wheels: 'aero Wheels',
       customer: {
-        name: 'Fernando Papito',
-        email: 'papito@velo.dev'
-      },
+        name: 'leo euzebio',
+        email: 'diver@velo.dev.com',
+    },
       payment: 'À Vista'
     }
 
@@ -76,15 +76,16 @@ test.describe('Consulta de Pedido', () => {
 
     // Test Data
     const order = {
-      number: 'VLO-0LNFEA',
-      status: 'REPROVADO' as const,
-      color: 'Midnight Black',
+      number: 'VLO-9GKXPY',
+      status: 'REPROVADO',
+      color: 'Lunar White',
       wheels: 'sport Wheels',
       customer: {
-        name: 'Steve Jobs',
-        email: 'jobs@apple.com'
-      },
-      payment: 'À Vista'
+        name: 'Bruce Euzebio',
+        email: 'bruce@iron.com.br',
+
+    },
+    payment: 'À Vista',
     }
 
     // Act  
@@ -130,17 +131,17 @@ test.describe('Consulta de Pedido', () => {
 
     // Test Data
     const order = {
-      number: 'VLO-412O06',
-      status: 'EM_ANALISE' as const,
+      number: 'VLO-U0DM7F',
+      status: 'EM_ANALISE',
       color: 'Lunar White',
       wheels: 'aero Wheels',
       customer: {
-        name: 'João da Silva',
-        email: 'joao@velo.dev'
-      },
-      payment: 'À Vista'
-    }
+        name: 'Maira Carolina',
+        email: 'maira@velo.dev',
 
+    },
+    payment: 'À Vista',
+    }
     // Act  
     const orderLockupPage = new OrderLockupPage(page)
     await orderLockupPage.searchOrder(order.number)
